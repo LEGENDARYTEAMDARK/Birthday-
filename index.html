@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday  Bella ❤️</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Segoe UI',sans-serif;
+  height:100vh;
+  overflow:hidden;
+  color:white;
+  position: relative;
+}
+
+/* ===== Background Image ===== */
+#bg{
+  position:fixed;
+  inset:0;
+  background:url('https://i.supaimg.com/3c20d294-d3bd-46ca-8bda-2141a476b4cb.png') no-repeat center center;
+  background-size:cover;
+  filter: brightness(0.5); /* Darken for readability */
+  z-index:-2;
+}
+
+/* Intro Page */
+#intro{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+  z-index:1000;
+  padding:20px;
+}
+#introBox{
+  background:rgba(255,255,255,0.12);
+  border-radius:25px;
+  padding:30px;
+  box-shadow:0 0 40px #ff7eb3;
+}
+#introBox h1{line-height:1.6; font-size:20px;}
+#introBtn{
+  margin-top:20px;
+  padding:14px 30px;
+  border:none;
+  border-radius:30px;
+  background:#ff2f92;
+  color:white;
+  font-size:16px;
+  box-shadow:0 0 20px pink;
+  cursor:pointer;
+}
+
+/* Main Reel Page */
+#mainCard{
+  display:none;
+  position:absolute;
+  inset:0;
+  text-align:center;
+  z-index:10;
+}
+
+/* Reel Animations */
+.reelText{
+  opacity:0;
+  transform: translateY(30px) scale(0.8);
+  animation-fill-mode:forwards;
+}
+.fadeIn1{animation:fadeIn 1s 0.2s forwards;}
+.fadeIn2{animation:fadeIn 1s 1s forwards;}
+.fadeIn3{animation:fadeIn 1s 2s forwards;}
+
+@keyframes fadeIn{
+  0%{opacity:0; transform:translateY(30px) scale(0.8);}
+  100%{opacity:1; transform:translateY(0) scale(1);}
+}
+
+/* Name Glow */
+#name{
+  font-size:32px;
+  color:#ff2f92;
+  text-shadow:0 0 10px #ff9acb,0 0 25px #ff9acb;
+  animation:glow 2s infinite alternate;
+}
+@keyframes glow{0%{text-shadow:0 0 10px #ff2f92;}100%{text-shadow:0 0 35px #ff9acb;}}
+
+/* Hug Animation */
+#hug{
+  font-size:42px;
+  margin:10px 0;
+  animation:hug 1.4s infinite;
+}
+@keyframes hug{0%{transform:scale(1);}50%{transform:scale(1.25);}100%{transform:scale(1);}}
+
+/* Heart Rain */
+.heart{position:absolute;color:pink;font-size:18px;animation:fall 6s linear infinite;}
+@keyframes fall{0%{transform:translateY(-10vh);opacity:1;}100%{transform:translateY(110vh);opacity:0;}}
+
+/* Floating Hearts & Roses */
+.heartRose{
+  position:absolute;
+  bottom:-100px;
+  font-size:30px;
+  animation:floatHR 8s linear infinite;
+  pointer-events:none;
+}
+@keyframes floatHR{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(-120vh) rotate(360deg);}
+}
+
+/* Fireworks */
+canvas{position:fixed;top:0;left:0;pointer-events:none;z-index:5;}
+</style>
+</head>
+<body>
+
+<!-- Background Image -->
+<div id="bg"></div>
+
+<!-- Music -->
+<audio id="music" loop muted>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<!-- Intro Page -->
+<div id="intro">
+  <div id="introBox">
+    <h1>🎂 HAPPY BIRTHDAY JAAN ❤️<br>
+      This is a special day but I am not there to celebrate 😔</h1>
+    <button id="introBtn" onclick="startReel()">Tap Here ❤️</button>
+  </div>
+</div>
+
+<!-- Main Reel Card -->
+<div id="mainCard">
+  <div class="reelText fadeIn1"><h1>🎉 Happy Birthday 🎉</h1></div>
+  <div class="reelText fadeIn2" id="name">Bella ❤️</div>
+  <div class="reelText fadeIn3" id="hug">🤗</div>
+  <p class="reelText fadeIn3" id="typing"></p>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+/* Start Reel & Play Music */
+function startReel(){
+  document.getElementById("intro").style.display="none";
+  const main=document.getElementById("mainCard");
+  main.style.display="block";
+
+  const music=document.getElementById("music");
+  music.muted=false;
+  music.play();
+
+  startTyping();
+}
+
+/* Typing Message */
+let text="Happy Birthday Bella 💖 This 2nd January is very special for both of us. Even if I am not there, my heart is with you.";
+let i=0;
+function startTyping(){
+  if(i<text.length){
+    document.getElementById("typing").innerHTML+=text.charAt(i++);
+    setTimeout(startTyping,60);
+  }
+}
+
+/* Heart Rain */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(15+Math.random()*20)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},300);
+
+/* Floating Hearts & Roses */
+const symbols = ["❤️","🌹"];
+for(let i=0;i<15;i++){
+  let s = document.createElement("div");
+  s.className="heartRose";
+  s.style.left=Math.random()*100+"vw";
+  s.style.fontSize=(20+Math.random()*25)+"px";
+  s.innerHTML = symbols[Math.floor(Math.random()*symbols.length)];
+  s.style.animationDuration=(6+Math.random()*5)+"s";
+  document.body.appendChild(s);
+}
+
+/* Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth; canvas.height=innerHeight;
+let fireworks=[];
+function Firework(x,y){
+  this.p=[];
+  for(let i=0;i<30;i++){
+    this.p.push({x,y,vx:Math.random()*6-3,vy:Math.random()*6-3,a:1});
+  }
+}
+setInterval(()=>{
+  fireworks.push(new Firework(Math.random()*canvas.width,Math.random()*canvas.height/2));
+},800);
+
+(function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  fireworks.forEach((f,fi)=>{
+    f.p.forEach(pt=>{
+      pt.x+=pt.vx;
+      pt.y+=pt.vy;
+      pt.a-=0.02;
+      ctx.fillStyle=`rgba(255,${Math.random()*255},200,${pt.a})`;
+      ctx.fillRect(pt.x,pt.y,3,3);
+    });
+    if(f.p[0].a<=0)fireworks.splice(fi,1);
+  });
+  requestAnimationFrame(animate);
+})();
+</script>
+
+</body>
+</html>
